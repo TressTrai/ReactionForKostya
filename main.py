@@ -29,8 +29,7 @@ async def command_start_handler(message: Message) -> None:
 # Обработчик любого сообщения
 @dp.message()
 async def update_user_data(message: Message) -> None:
-    user_id = message.from_user.id  # получаем айдишник пользователя
-    print("Есть сообщение")
+    """ user_id = message.from_user.id  # получаем айди пользователя
     # Костя - 992948178
     # Я - 7044405837
     if user_id == 992948178:
@@ -38,7 +37,14 @@ async def update_user_data(message: Message) -> None:
         try:
             await message.react([emoji])
         except Exception as e:
-            print(f"Ошибка при добавлении реакции: {e}")
+            print(f"Ошибка при добавлении реакции: {e}")"""
+
+
+# Команда /addEmojiReaction - Добавляем новую реакцию на сообщения пользователя
+@dp.message(Command('addEmojiReaction'))
+async def start_add_emoji_reaction(message: Message):
+    logging.info("Команда /addEmojiReaction была вызвана.")
+    await message.answer("Сообщение")
 
 
 async def main() -> None:
