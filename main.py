@@ -28,17 +28,28 @@ async def command_start_handler(message: Message) -> None:
                          f"Пользователей")
 
 
+# Команда /help - Бот объясняет как он работает
+@dp.message(Command('help'))
+async def print_help(message: Message):
+    await message.reply("Чтобы создать ивент реакций на пользователя необходимо:\n"
+                         "1) Выбрать жертву \n"
+                         "2) Найти его сообщение в текущем чате\n"
+                         "3) Ответить на его сообщение\n"
+                         "4) Ввести команду /add_event\n"
+                         "5) Через пробел указать необходимый эмодзи для реакции\n"
+                         "6) Через пробел указать длительность ивента в формате МИНУТЫ:СЕКУНДЫ\n"
+                         "7) Наслаждаться")
+
 # Команда /addReactionEvent - Добавляем новую реакцию на сообщения пользователя
-@dp.message(Command('addReactionEvent'))
+@dp.message(Command('add_event'))
 async def add_emoji_reaction(message: Message):
-    logging.info("Команда /addReactionEvent была вызвана.")
 
     # Извлекаем текст сообщения после команды
     args = message.text.strip().split()
 
     if len(args) != 3:
         await message.reply("Неверное количество параметров.\n"
-                            "Используйте: /addReactionEvent эмодзи длительность_ивента")
+                            "Используйте: /add_event эмодзи длительность_ивента")
         return
 
     # Фиксируем айди чата
@@ -77,12 +88,18 @@ async def add_emoji_reaction(message: Message):
 
     insert_reaction_event(chat_id, user_id, emoji, event_duration, event_start)
 
-    await message.reply(f"Добавлено событие реакции:\n"
+    await message.reply(f"Добавлен новый ивент в этом чате:\n"
+                        f"Для пользователя: {user_id}\n"
+                        f"Эмодзи-реакция: {emoji}\n"
+                        f"Длительность: {event_duration.replace("m", " минут").replace("s", " секунд")}\n")
+                        # f"Длительность: {event_duration.split(":")[0]} минут {event_duration.split(":")[1]} секунд\n")
+
+    """await message.reply(f"Добавлено событие реакции:\n"
                         f"Chat ID: {chat_id}\n"
                         f"User ID: {user_id}\n"
                         f"Emoji: {emoji}\n"
                         f"Event Duration: {event_duration}\n"
-                        f"Start Event: {event_start}")
+                        f"Start Event: {event_start}")"""
 
 
 # Обработчик любого сообщения
@@ -115,11 +132,13 @@ async def check_message(message: Message) -> None:
                 delete_reaction_event(chat_id, user_id)
                 return
 
-        # emoji = ReactionTypeEmoji(emoji='🤓')
-        """try:
-            await message.react([emoji])
-        except Exception as e:
-            print(f"Ошибка при добавлении реакции: {e}")"""
+            # Наконец-то ставим какую-то реакцию
+            emoji = ReactionTypeEmoji(emoji=event[2])
+
+            try:
+                await message.react([emoji])
+            except Exception as e:
+                print(f"Ошибка при добавлении реакции: {e}")
 
 
 async def main() -> None:
