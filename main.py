@@ -111,6 +111,16 @@ async def check_message(message: Message) -> None:
     # получаем айди пользователя
     user_id = message.from_user.id
 
+    # Пасхалка для деда
+    if chat_id == -1001781232071 and user_id == 804111143:
+        text = message.text.lower()  # Приводим текст к нижнему регистру
+        if text == "пизда":
+            await message.reply("Да.")
+        if text == "да":
+            await message.reply("Пизда.")
+        if "питон" in text:
+            await message.reply("Питон говно.")
+
     # получаем все ивенты
     reaction_events = get_reaction_event()
 
