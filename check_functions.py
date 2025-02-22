@@ -17,7 +17,6 @@ def get_tg_fullname(message):
         user = message.reply_to_message.from_user
     else:
         user = message.from_user
-    # Если пересланного сообщения нет, возвращаем ID текущего пользователя
     return " ".join(filter(None, [user.first_name, user.last_name]))
 
 
