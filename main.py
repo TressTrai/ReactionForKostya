@@ -36,12 +36,10 @@ async def add_emoji_reaction(message: Message):
     # Извлекаем текст сообщения после команды
     args = message.text.strip().split()
 
-    await message.answer(str(len(args)))
-
-    """if len(args) != 2:
-        await message.answer("Неверное количество параметров. Используйте:\n"
-                            "/addReactionEvent <emoji> <event_duration>")
-        return"""
+    if len(args) != 3:
+        await message.reply("Неверное количество параметров.\n"
+                            "Используйте: /addReactionEvent эмодзи длительность_ивента")
+        return
 
     # Фиксируем айди чата
     chat_id = message.chat.id
@@ -53,16 +51,14 @@ async def add_emoji_reaction(message: Message):
     if is_available_emoji(args[1]):
         emoji  = is_available_emoji(args[1])
     else:
-        await message.answer("Смайлик для реакций не допустим!")
+        await message.reply("Смайлик для реакций не допустим!")
         return
 
     # Фиксируем длину ивента
-    await message.answer(args[2])
-
     if transfer_interval(args[2]):
         event_duration = transfer_interval(args[2])
     else:
-        await message.answer("Некорректная длительность ивента: \n"
+        await message.reply("Некорректная длительность ивента: \n"
                              "- Длительность ивента должна быть в формате МИНУТЫ:СЕКУНДЫ; \n"
                              "- Длительность ивента должна быть меньше часа.")
         return
@@ -73,7 +69,7 @@ async def add_emoji_reaction(message: Message):
 
     insert_reaction_event(chat_id, user_id, emoji, event_duration, event_start)
 
-    await message.answer(f"Добавлено событие реакции:\n"
+    await message.reply(f"Добавлено событие реакции:\n"
                         f"Chat ID: {chat_id}\n"
                         f"User ID: {user_id}\n"
                         f"Emoji: {emoji}\n"
