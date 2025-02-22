@@ -20,8 +20,7 @@ def get_reaction_event():
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT chat_id, user_id, emoji, event_duration, event_start"
-                   "FROM reaction_events;")
+    cursor.execute("SELECT chat_id, user_id, emoji, event_duration, event_start FROM reaction_events;")
     reaction_events_cursor = cursor.fetchall()
 
     cursor.close()
