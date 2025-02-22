@@ -88,11 +88,15 @@ async def add_emoji_reaction(message: Message):
 
     insert_reaction_event(chat_id, user_id, emoji, event_duration, event_start)
 
-    await message.reply(f"Добавлен новый ивент в этом чате:\n"
-                        f"Для пользователя: {user_id}\n"
-                        f"Эмодзи-реакция: {emoji}\n"
-                        f"Длительность: {event_duration.replace("m", " минут").replace("s", " секунд")}\n")
-                        # f"Длительность: {event_duration.split(":")[0]} минут {event_duration.split(":")[1]} секунд\n")
+    user_fullname = get_tg_fullname(message)
+
+    await message.reply(
+        f"Добавлен новый ивент в этом чате:\n"
+        f"Для пользователя: <a href=\"tg://user?id={user_id}\">{user_fullname}</a>\n"
+        f"Эмодзи-реакция: {emoji}\n"
+        f"Длительность: {event_duration.replace("m", " минут").replace("s", " секунд")}\n",
+    )
+    # f"Длительность: {event_duration.split(":")[0]} минут {event_duration.split(":")[1]} секунд\n")
 
     """await message.reply(f"Добавлено событие реакции:\n"
                         f"Chat ID: {chat_id}\n"
