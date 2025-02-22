@@ -10,7 +10,7 @@ CREATE TABLE "reaction_events" (
     -- сколько по времени бот будет ставить реакции на этого пользователя
     "event_duration" INTERVAL NOT NULL,
     -- со скольки данный ивент начался
-    "event_start" TIMESTAMP NOT NULL,
+    "event_start" TIMESTAMP  without time zone NOT NULL,
     PRIMARY KEY("chat_id", "user_id")
 );
 

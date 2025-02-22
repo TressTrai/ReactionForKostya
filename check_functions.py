@@ -32,29 +32,22 @@ def transfer_interval(user_interval):
     pattern = r'^[0-9:]+$'
 
     if not bool(re.match(pattern, user_interval)):
-        print("патерн")
         return False
     if len(user_interval.split(":")) != 2:
-        print("некорректно колво")
         return False
 
     minutes = user_interval.split(":")[0]
     seconds = user_interval.split(":")[1]
 
     if int(minutes) > 60:
-        print("больше минута")
         return False
     if int(seconds) > 60:
-        print("больше секунда")
         return False
     if int(minutes) < 0:
-        print("меньше минута")
         return False
     if int(seconds) < 0:
-        print("меньше секнуда")
         return False
     if int(minutes) == 0 and int(seconds) == 0:
-        print("ноль")
         return False
 
     return f"{minutes}m {seconds}s"

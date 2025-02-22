@@ -65,7 +65,7 @@ async def add_emoji_reaction(message: Message):
 
 
     # Фиксируем начала ивента
-    event_start = message.date
+    event_start = str(message.date).replace("+00:00", "")
 
     # Проверяем на то, что на данного пользователя еще нет ивента
     reaction_keys = [(item[0], item[1]) for item in get_reaction_event()]
@@ -94,11 +94,29 @@ async def check_message(message: Message) -> None:
     # получаем айди пользователя
     user_id = message.from_user.id
 
-    # Костя - 992948178
-    # Я - 7044405837
-    """if user_id == 992948178:
-        emoji = ReactionTypeEmoji(emoji='🤓')
-        try:
+    # получаем все ивенты
+    reaction_events = get_reaction_event()
+
+    reaction_keys = [(item[0], item[1]) for item in reaction_events]
+
+    # проверяем есть ли ивент для данного пользователя в данном чате
+    if not (chat_id, user_id) in reaction_keys:
+        return
+
+    # перебираем все ивенты
+    for event in reaction_events:
+
+        # находим нужный ивент
+        if event[0] == chat_id and event[1] == user_id:
+
+            # Проверяем закончился ли ивент
+            if event[3] + event[4] < message.date.replace(tzinfo=None):
+                # Удаляем ивент, если он закончен
+                delete_reaction_event(chat_id, user_id)
+                return
+
+        # emoji = ReactionTypeEmoji(emoji='🤓')
+        """try:
             await message.react([emoji])
         except Exception as e:
             print(f"Ошибка при добавлении реакции: {e}")"""
