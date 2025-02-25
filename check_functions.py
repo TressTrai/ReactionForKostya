@@ -11,6 +11,15 @@ def get_tg_id(message):
     return message.from_user.id
 
 
+def get_tg_fullname(message):
+    # Проверяем, есть ли пересланное сообщение
+    if message.reply_to_message:
+        user = message.reply_to_message.from_user
+    else:
+        user = message.from_user
+    return " ".join(filter(None, [user.first_name, user.last_name]))
+
+
 # Получаем список доступных эмодзи для реакций
 def get_available_emoji():
     with open('available_emoji.txt', 'r', encoding='utf-8') as file:
